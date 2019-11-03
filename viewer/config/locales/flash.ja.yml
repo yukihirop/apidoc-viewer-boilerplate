@@ -1,0 +1,7 @@
+ja:
+  flash:
+    logged_in: "ログイン成功"
+    logged_out: "ログアウト成功"
+    created: "%{resource}の作成に成功"
+    updated: "%{resource}の更新に成功"
+    destroyed: "%{resource}の削除に成功"

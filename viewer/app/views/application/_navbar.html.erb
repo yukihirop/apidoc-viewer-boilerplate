@@ -8,14 +8,14 @@
     <ul class="nav navbar-nav pull-right">
       <% if logged_in? %>
         <li>
-          <span class="confidential badge alert-success">社外秘</span>
+          <span class="confidential badge alert-success"><%= t("shared.confidential") %></span>
         </li>
         <li>
-          <%= link_to "ログアウト (#{current_user.name})", logout_path, method: :delete, class: 'ml-3 text-white' %>
+          <%= link_to t("shared.logout", resource: current_user.name), logout_path, method: :delete, class: 'ml-3 text-white' %>
         </li>
       <% else %>
         <li>
-          <%= link_to "ログイン", login_path, method: :post, class: 'ml-3 text-white' %>
+          <%= link_to t("shared.login"), login_path, method: :post, class: 'ml-3 text-white' %>
         </li>
       <% end %>
     </ul>

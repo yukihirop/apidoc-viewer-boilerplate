@@ -1,0 +1,5 @@
+ja:
+  shared:
+    login: ログイン
+    logout: "ログアウト (%{resource})"
+    confidential: 社外秘

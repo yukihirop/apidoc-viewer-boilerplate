@@ -1,0 +1,5 @@
+export GOOGLE_CLIENT_ID=
+export GOOGLE_CLIENT_SECRET=
+
+export APIDOC_TITLE=k8s
+export APIDOC_URL=http://0.0.0.0:8080

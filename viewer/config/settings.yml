@@ -1,0 +1,3 @@
+apidoc: &apidoc
+  title: <%= ENV['APIDOC_TITLE'] %>
+  url: <%= ENV['APIDOC_URL'] %>
