@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <% if logged_in? && @apidoc_title.present? %>
+     <span class="navbar-brand">API Document Viewer (<%= @apidoc_title %>)</span>
+  <% else %>
+     <span class="navbar-brand">API Document Viewer</span>
+  <% end %>
+  <div class="collapse navbar-collapse justify-content-end">
+    <ul class="nav navbar-nav pull-right">
+      <% if logged_in? %>
+        <li>
+          <span class="confidential badge alert-success">社外秘</span>
+        </li>
+        <li>
+          <%= link_to "ログアウト (#{current_user.name})", logout_path, method: :delete, class: 'ml-3 text-white' %>
+        </li>
+      <% else %>
+        <li>
+          <%= link_to "ログイン", login_path, method: :post, class: 'ml-3 text-white' %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</nav>
