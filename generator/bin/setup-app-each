@@ -18,10 +18,10 @@ end
 
 chdir APP_ROOT do
   chdir 'projects' do
-    chdir 'r2oas-k8s-example' do
+    chdir 'r2oas-moneyforward-example' do
       system! "git pull origin #{branch}"
       system! 'bundle install --path vendor/bundle'
-      system! 'cp k8s.yaml /tmp/apidoc.yaml'
+      system! 'cp moneyforward.yaml /tmp/apidoc.yaml'
     end
   end
 end
