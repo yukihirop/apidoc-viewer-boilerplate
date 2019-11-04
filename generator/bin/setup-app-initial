@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+#frozen_string_literal:true
+
+require 'fileutils'
+include FileUtils
+
+APP_ROOT = File.expand_path('..', __dir__)
+FileUtils.mkdir_p("#{APP_ROOT}/projects")
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+def branch
+  ENV.fetch('APP_BRANCH', 'master')
+end
+
+chdir APP_ROOT do
+  chdir 'projects' do
+    system! 'git clone git@github.com:yukihirop/r2oas-k8s-example.git'
+    chdir 'r2oas-k8s-example' do
+      system! "git checkout #{branch}"
+      system! 'bundle config --local build.mysql2 "--with-ldflags=-L/usr/local/opt/openssl/lib"'
+      system! 'bundle install --path vendor/bundle'
+    end
+  end
+end

@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+#frozen_string_literal:true
+
+require 'fileutils'
+include FileUtils
+
+APP_ROOT = File.expand_path('..', __dir__)
+FileUtils.mkdir_p("#{APP_ROOT}/projects")
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+# MEMO:
+# need /tmp/apidoc.yaml
+# need「json2yaml・widdershins」
+chdir APP_ROOT do
+  chdir "projects" do
+    chdir 'slate' do
+      system! 'git pull origin master'
+      system! 'bundle install --path ./vendor/bundle'
+      system! 'js-yaml /tmp/apidoc.yaml > /tmp/apidoc.json'
+      system! "widdershins --search true --language_tabs 'ruby:Ruby' --summary /tmp/apidoc.json -o ./source/index.html.md"
+      # update build dir
+      system! 'bundle exec middleman build --clean'
+      system! 'cp -r build /tmp'
+    end
+  end
+end

@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+#frozen_string_literal:true
+
+require 'fileutils'
+include FileUtils
+
+APP_ROOT = File.expand_path('..', __dir__)
+FileUtils.mkdir_p("#{APP_ROOT}/projects")
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+chdir APP_ROOT do
+  chdir "projects" do
+    system! 'rm -rf /usr/local/bundle/cache'
+    system! 'bundle config --global git.allow_insecure true'
+  end
+end
