@@ -1,2 +1,6 @@
 */vendor/bundle
 */node_modules
+certs
+!certs/.keep
+tmp
+.env

@@ -1,0 +1,84 @@
+# https://stackoverflow.com/questions/45358188/restrict-access-to-nginx-server-location-to-a-specific-docker-container-with-al
+version: "3"
+services:
+  apidoc:
+    image: "nginx:alpine"
+    ports:
+      - "${APIDOC_PORT}:80"
+    volumes:
+      - ./tmp/nginx.conf:/etc/nginx/conf.d/default.conf
+      - build_repository:/var/www/html
+    links:
+      - viewer_backend:viewer
+    depends_on:
+      - generator
+    networks:
+      apidoc-network:
+        ipv4_address: ${IPV4_ADDRESS_APIDOC}
+  viewer_backend: &viewer_base
+    build: ./viewer
+    ports:
+      - "${VIEWER_PORT}:3000"
+    command: bundle exec puma -C config/puma.rb
+    environment:
+      # app setting
+      APIDOC_TITLE: ${APIDOC_TITLE}
+      APIDOC_URL: ${APIDOC_URL}
+      VIEWER_DATABASE_NAME: ${VIEWER_DATABASE_NAME}
+      VIEWER_DATABASE_USERNAME: ${VIEWER_DATABASE_USERNAME}
+      VIEWER_DATABASE_PASSWORD: ${VIEWER_DATABASE_PASSWORD}
+      VIEWER_DATABASE_HOST: viewer_db
+      # google oauth2
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+    volumes:
+      - ./viewer:/app
+    depends_on:
+      - generator
+      - viewer_db
+    tty: false
+    stdin_open: false
+    networks:
+      apidoc-network:
+        ipv4_address: ${IPV4_ADDRESS_VIEWER_BACKEND}
+  # https://github.com/rails/webpacker/issues/2071#issue-438096698
+  viewer_frontend:
+    <<: *viewer_base
+    command: "bin/webpack --config config/webpack/production.js"
+    ports:
+      - "3035:3035"
+    depends_on:
+      - viewer_backend
+    tty: false
+    stdin_open: false
+    networks:
+      apidoc-network:
+        ipv4_address: ${IPV4_ADDRESS_VIEWER_FRONTEND}
+  viewer_db:
+    image: postgres:10-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      apidoc-network:
+        ipv4_address: ${IPV4_ADDRESS_VIEWER_DB}
+  generator:
+    build:
+      context: ./generator
+      args:
+        current_date: ${CURRENT_DATE}
+    environment:
+      APP_BRANCH: ${APP_BRANCH}
+    volumes:
+      - build_repository:/tmp/build
+    networks:
+      apidoc-network:
+        ipv4_address: ${IPV4_ADDRESS_GENERATOR}
+volumes:
+  build_repository:
+  db_data:
+networks:
+  apidoc-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${APIDOC_SUBNET}
