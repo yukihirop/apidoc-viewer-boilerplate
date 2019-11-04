@@ -2,6 +2,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper_method :current_user, :logged_in?
 
+  rescue_from ActiveRecord::RecordNotFound do
+    head :not_found
+  end
+
+  rescue_from ActionController::InvalidAuthenticityToken do
+    head :bad_request
+  end
+
   private
 
   def current_user
