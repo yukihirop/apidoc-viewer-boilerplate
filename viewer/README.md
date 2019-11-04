@@ -1,24 +1,24 @@
-# README
+# Viewer
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## development
 
-Things you may want to cover:
+```bash
+$ cp .envrc.sample .envrc
+```
 
-* Ruby version
+and set value.
 
-* System dependencies
+#### frontend
 
-* Configuration
+```
+$ yarn
+$ bin/webpack-dev-server
+```
 
-* Database creation
+#### backend
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+$ bundle install --path vendor/bundle
+$ bundle exec rails db:create db:migrate
+$ bundle exec rails s
+```
