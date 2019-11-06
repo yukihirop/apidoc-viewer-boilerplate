@@ -76,6 +76,7 @@ test:
 production:
   <<: *default
   database: <%= ENV['VIEWER_DATABASE_NAME'] %>
-  username: <%= ENV['VIEWER_DATABASE_USERNAME'] %>
+  username: <%= ENV.fetch('VIEWER_DATABASE_USERNAME') { 'postgres' } %>
   password: <%= ENV['VIEWER_DATABASE_PASSWORD'] %>
   host: <%= ENV['VIEWER_DATABASE_HOST'] %>
+  port: <%= ENV.fetch('VIEWER_DATABASE_PORT') { 5432 } %>

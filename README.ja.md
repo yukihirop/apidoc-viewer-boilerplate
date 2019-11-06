@@ -64,6 +64,7 @@ $ /bin/bash deploy.sh --no-cache
 |VIEWER_DATABASE_NAME|`viewer`のデータベース名|`viewer_production`|
 |VIEWER_DATABASE_USERNAME|`viewer`のデータベースのユーザー名|`postgres`|
 |VIEWER_DATABASE_PASSWORD|`viewer`のデータベースのパスワード||
+|VIEWER_DATABASE_PORT|`viewer`のデータベースのポート|`5432`|
 |GOOGLE_CLIENT_ID|google-oauth2のクライアントID||
 |GOOGLE_CLIENT_SECRET|google-oauth2のクライアントシークレット||
 |VIEWER_PORT|`viewer`のポート|`3000`|

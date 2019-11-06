@@ -64,6 +64,7 @@ A description of the components of this tool.
 |VIEWER_DATABASE_NAME|`viewer` database name|`viewer_production`|
 |VIEWER_DATABASE_USERNAME|`viewer` database username|`postgres`|
 |VIEWER_DATABASE_PASSWORD|`viewer` database password||
+|VIEWER_DATABASE_PORT|`viewer` database port|`5432`|
 |GOOGLE_CLIENT_ID|google-oauth2 client ID||
 |GOOGLE_CLIENT_SECRET|google-oauth2 client secret||
 |VIEWER_PORT|`viewer` port|`3000`|
