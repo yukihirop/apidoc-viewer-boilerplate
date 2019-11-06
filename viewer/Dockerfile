@@ -31,4 +31,4 @@ RUN bundle install --jobs 20 --retry 5 --without development test
 RUN yarn install
 
 ADD . $APP_HOME
-RUN bundle exec rake assets:precompile
+RUN bundle exec rake assets:precompile webpacker:compile
