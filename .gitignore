@@ -1,6 +1,11 @@
 */vendor/bundle
 */node_modules
-certs
+
+certs/*
 !certs/.keep
+
+apidoc/ssl/*
+!apidoc/ssl/.keep
+
 tmp
 .env

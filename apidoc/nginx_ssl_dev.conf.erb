@@ -1,0 +1,54 @@
+upstream viewer {
+  server unix:///app/tmp/sockets/puma.sock;
+}
+
+server {
+  listen 80;
+  server_name <%= ENV['APIDOC_SERVER_NAME'] %>;
+  return 301 https://$host$request_uri;
+}
+
+server {
+  listen 443 ssl;
+  server_name <%= ENV['APIDOC_SERVER_NAME'] %>;
+  ssl_certificate <%= "/etc/nginx/ssl/#{ENV['APIDOC_SSL_CERT']}" %>;
+  ssl_certificate_key <%= "/etc/nginx/ssl/#{ENV['APIDOC_SSL_CERT_KEY']}" %>;
+  server_tokens off;
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
+
+  try_files $uri @viewer;
+
+  # Disable HTTP_Strict_Transport_Security
+  add_header Strict-Transport-Security "max-age=0; includeSubDomains";
+
+  location = /favicon.ico {
+    log_not_found off;
+  }
+
+  location @viewer {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_pass http://viewer;
+  }
+}
+
+# API Document Server
+server {
+  listen 8080;
+  server_name <%= ENV['APIDOC_SERVER_NAME'] %>;
+  root /var/www/html;
+  index index.html;
+
+  # MEMO:
+  # https://stackoverflow.com/questions/45358188/restrict-access-to-nginx-server-location-to-a-specific-docker-container-with-al
+  # https://qiita.com/yu_suke1994/items/39fa64ef96aa2a67dc2a
+  location ~^/index.html {
+    allow <%= ENV['EXTERNAL_IP'] %>;
+    allow <%= ENV['APIDOC_SUBNET_DEFAULT_GATEWAY'] %>;
+    allow <%= ENV['IPV4_ADDRESS_VIEWER_BACKEND'] %>;
+    deny all;
+  }
+}

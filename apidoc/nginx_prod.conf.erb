@@ -1,0 +1,49 @@
+upstream viewer {
+  server unix:///app/tmp/sockets/puma.sock;
+}
+
+server {
+  listen 80;
+  server_name <%= ENV['APIDOC_SERVER_NAME'] %>;
+  server_tokens off;
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
+
+  # Since the instance is accessible from the ELB IP
+  # Replace ELB IP with real client IP
+  # The actual IP enters X-Forwarded-For via ELB
+  set_real_ip_from <%= ENV['ELB_SUBNET_ADDRESS'] %>;
+  real_ip_header X-Forwarded-For;
+
+  try_files $uri @viewer;
+
+  location = /favicon.ico {
+    log_not_found off;
+  }
+
+  location @viewer {
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_pass http://viewer;
+  }
+}
+
+# API Document Server
+server {
+  listen 8080;
+  server_name <%= ENV['APIDOC_SERVER_NAME'] %>;
+  root /var/www/html;
+  index index.html;
+
+  # MEMO:
+  # https://stackoverflow.com/questions/45358188/restrict-access-to-nginx-server-location-to-a-specific-docker-container-with-al
+  # https://qiita.com/yu_suke1994/items/39fa64ef96aa2a67dc2a
+  location ~^/index.html {
+    allow <%= ENV['EXTERNAL_IP'] %>;
+    allow <%= ENV['APIDOC_SUBNET_DEFAULT_GATEWAY'] %>;
+    allow <%= ENV['IPV4_ADDRESS_VIEWER_BACKEND'] %>;
+    deny all;
+  }
+}

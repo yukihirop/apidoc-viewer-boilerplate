@@ -70,6 +70,9 @@ $ /bin/bash deploy.sh --no-cache
 |VIEWER_PORT|`viewer`のポート|`3000`|
 |APIDOC_PORT|`apidoc`のポート|`8080`|
 |APIDOC_SERVER_NAME|`apidoc`のサーバーネーム|`_`|
+|APIDOC_SSL_PORT|`apidoc`のsslポート|`443`|
+|APIDOC_SSL_CERT|`apidoc`の証明書ファイル||
+|APIDOC_SSL_CERT_KEY|`apidoc`の秘密鍵||
 |APP_BRANCH|APIドキュメントのファイルを管理しているアプリのブランチ|`master`|
 |IPV4_ADDRESS_APIDOC|`apidoc`のIPアドレス|`172.25.0.103`|
 |IPV4_ADDRESS_VIEWER_BACKEND|`viewer(backend)`のIPアドレス|`172.25.0.100`|
@@ -78,4 +81,6 @@ $ /bin/bash deploy.sh --no-cache
 |IPV4_ADDRESS_GENERATOR|`generator`のIPアドレス|`172.25.0.104`|
 |APIDOC_SUBNET|APIドキュメントを表示するためのコンポーネント郡のサブネット|`172.25.0.0/24`|
 |APIDOC_SUBNET_DEFAULT_GATEWAY|サブネットのデフォルトゲートウェイ|`172.25.0.1`|
+|EXTERNAL_IP|デプロイ先のインスタンスの外部IP|`127.0.0.1`|
+|ELB_SUBNET_ADDRESS|ELBのネットワークアドレス||
 

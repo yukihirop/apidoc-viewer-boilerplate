@@ -69,6 +69,9 @@ A description of the components of this tool.
 |GOOGLE_CLIENT_SECRET|google-oauth2 client secret||
 |VIEWER_PORT|`viewer` port|`3000`|
 |APIDOC_PORT|`apidoc` port|`8080`|
+|APIDOC_SSL_PORT|`apidoc`のsslポート|`443`|
+|APIDOC_SSL_CERT|`apidoc` cert||
+|APIDOC_SSL_CERT_KEY|`apidoc` cert key||
 |APIDOC_SERVER_NAME|`apidoc` server name|`_`|
 |APP_BRANCH|The branch of the app that manages the API document files|`master`|
 |IPV4_ADDRESS_APIDOC|`apidoc` IP Address|`172.25.0.103`|
@@ -78,4 +81,5 @@ A description of the components of this tool.
 |IPV4_ADDRESS_GENERATOR|`generator` IP Address|`172.25.0.104`|
 |APIDOC_SUBNET|Component county subnet for viewing API documentation|`172.25.0.0/24`|
 |APIDOC_SUBNET_DEFAULT_GATEWAY|Subnet default gateway|`172.25.0.1`|
-
+|EXTERNAL_IP|deployed instance External IP|`127.0.0.1`|
+|ELB_SUBNET_ADDRESS|ELB network address||
