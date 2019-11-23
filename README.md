@@ -29,20 +29,6 @@ The moneyforward API documentation is borrowed from the head family.
 - widdershins (latest)
 - js-yaml (latest)
 
-## Deploy (docker-compose)
-
-```bash
-$ cp .env.sample .env
-# When using Docker image cache
-$ /bin/bash deploy.sh
-# When not using Docker image cache
-$ /bin/bash deploy.sh --no-cache
-```
-
-※ There is a bug that the cache of the image you want to cache is not effective even if `--no-cache` is not specified, but it does not affect the operation.
-
-※ It takes a long time and takes about 5-10 minutes.
-
 ## Components
 
 A description of the components of this tool.
@@ -69,6 +55,9 @@ A description of the components of this tool.
 |GOOGLE_CLIENT_SECRET|google-oauth2 client secret||
 |VIEWER_PORT|`viewer` port|`3000`|
 |APIDOC_PORT|`apidoc` port|`8080`|
+|APIDOC_SSL_PORT|`apidoc` ssl port|`443`|
+|APIDOC_SSL_CERT|`apidoc` cert||
+|APIDOC_SSL_CERT_KEY|`apidoc` cert key||
 |APIDOC_SERVER_NAME|`apidoc` server name|`_`|
 |APP_BRANCH|The branch of the app that manages the API document files|`master`|
 |IPV4_ADDRESS_APIDOC|`apidoc` IP Address|`172.25.0.103`|
@@ -78,4 +67,72 @@ A description of the components of this tool.
 |IPV4_ADDRESS_GENERATOR|`generator` IP Address|`172.25.0.104`|
 |APIDOC_SUBNET|Component county subnet for viewing API documentation|`172.25.0.0/24`|
 |APIDOC_SUBNET_DEFAULT_GATEWAY|Subnet default gateway|`172.25.0.1`|
+|EXTERNAL_IP|deployed instance External IP|`127.0.0.1`|
+|ELB_SUBNET_ADDRESS|ELB network address||
+|HSTS_MAX_AGE|HTTP_Strict_Transport_Security max_age(valid production ssl)|`31536000`|
 
+
+## Deploy
+Prepare an `.env` file. Make appropriate settings after copying.
+
+`GOOGLE_CLIENT_ID` ・ If` GOOGLE_CLIENT_SECRET` is set, it should work.
+
+```bash
+cp .env.sample .env
+```
+
+When accessing a private repository, copy the private key and public key. The name must be `id_rsa` and` id_rsa.pub`.
+
+```bash
+cp ~/.ssh/id_rsa ./certs/id_rsa
+cp ~/.ssh/id_rsa.pub ./certs/id_rsa.pub
+```
+
+You need to configure viewer to use it in production environment, and execute the followiing command to prepare `config/master.key`
+
+```bash
+cd viewer
+bundle install --path vendor/bundle
+rm config/master.key
+rm config/credentials.yml.enc
+EDITOR=vim bundle exec rails credentials:edit
+```
+
+when depoying with using docker image cache.
+
+```bash
+/bin/bash deploy_dev.sh # development
+/bin/bash deploy_prod.sh # production
+```
+
+when deploying without using docker image cache.
+
+```bash
+/bin/bash deploy_dev.sh --no-cache # development
+/bin/bash deploy_prod.sh --no-cache # production
+```
+
+※ There is a problem that the cache of the image you want to cache is not effective even if `--no-cache` is not specified, but
+  it does not affect the operation.
+
+※ It takes a long time and takes about 5~10 minutes.
+
+## Deploy (ssl)
+
+Refre to this [document](https://github.com/yukihirop/apidoc-viewer-boilerplate/blob/master/docs/GENERATE_CERT.ja.md), prepare `cert file` and `private key` in `apidoc/ssl`.
+
+The metohod is the same as `## Deploy`
+
+when deploying with using docker image cache.
+
+```bash
+/bin/bash deploy_ssl_dev.sh # development
+/bin/bash deploy_ssl_prod.sh # production
+```
+
+when deploying without using docker image cache.
+
+```bash
+/bin/bash deploy_ssl_dev.sh --no-cache # development
+/bin/bash deploy_ssl_prod.sh --no-cache # production
+```

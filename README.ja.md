@@ -29,20 +29,6 @@ moneyforwardのAPIドキュメントに関しては本家からお借りして�
 - widdershins (latest)
 - js-yaml (latest)
 
-## Deploy (docker-compose)
-
-```bash
-$ cp .env.sample .env
-# Dockerのイメージのキャッシュを使う場合
-$ /bin/bash deploy.sh
-# Dockerのイメージのキャッシュを使わない場合
-$ /bin/bash deploy.sh --no-cache
-```
-
-※ `--no-cache` を指定してないのに設定が悪いのかキャッシュしてほしいイメージのキャッシュが効かない不具合が有りますが動作には影響しません。
-
-※　時間が結構かかり5〜10分くらいかかります。
-
 ## Components
 
 このツールのコンポーネント群に関しての説明です。
@@ -70,6 +56,9 @@ $ /bin/bash deploy.sh --no-cache
 |VIEWER_PORT|`viewer`のポート|`3000`|
 |APIDOC_PORT|`apidoc`のポート|`8080`|
 |APIDOC_SERVER_NAME|`apidoc`のサーバーネーム|`_`|
+|APIDOC_SSL_PORT|`apidoc`のsslポート|`443`|
+|APIDOC_SSL_CERT|`apidoc`の証明書ファイル||
+|APIDOC_SSL_CERT_KEY|`apidoc`の秘密鍵||
 |APP_BRANCH|APIドキュメントのファイルを管理しているアプリのブランチ|`master`|
 |IPV4_ADDRESS_APIDOC|`apidoc`のIPアドレス|`172.25.0.103`|
 |IPV4_ADDRESS_VIEWER_BACKEND|`viewer(backend)`のIPアドレス|`172.25.0.100`|
@@ -78,4 +67,72 @@ $ /bin/bash deploy.sh --no-cache
 |IPV4_ADDRESS_GENERATOR|`generator`のIPアドレス|`172.25.0.104`|
 |APIDOC_SUBNET|APIドキュメントを表示するためのコンポーネント郡のサブネット|`172.25.0.0/24`|
 |APIDOC_SUBNET_DEFAULT_GATEWAY|サブネットのデフォルトゲートウェイ|`172.25.0.1`|
+|EXTERNAL_IP|デプロイ先のインスタンスの外部IP|`127.0.0.1`|
+|ELB_SUBNET_ADDRESS|ELBのネットワークアドレス||
+|HSTS_MAX_AGE|HTTP_Strict_Transport_Securityのmax_age(本番SSLでのみ有効)|`31536000`|
 
+## Deploy
+
+`.env`  ファイルを用意する。コピーしてから適切に設定する。
+
+`GOOGLE_CLIENT_ID` ・ `GOOGLE_CLIENT_SECRET` を設定すれば動くはずである。
+
+```bash
+cp .env.sample .env
+```
+
+privateリポジトリにアクセスする場合は、秘密鍵と公開鍵をコピーする。名前は必ず `id_rsa`・`id_rsa.pub` とする。
+
+```bash
+cp ~/.ssh/id_rsa ./certs/id_rsa
+cp ~/.ssh/id_rsa.pub ./certs/id_rsa.pub
+```
+
+viewrをproduction環境で使うための設定が必要で以下のコマンドを実行して、`config/master.key` を用意する。
+
+```bash
+cd viewer
+bundle install --path vendor/bundle
+rm config/master.key
+rm config/credentials.yml.enc
+EDITOR=vim bundle exec rails credentials:edit
+```
+
+Dockerイメージキャッシュを使ってデプロイする場合
+
+```bash
+/bin/bash deploy_dev.sh # 開発
+/bin/bash deploy_prod.sh # 本番
+```
+
+Dokcerイメージキャッシュを使わないでデプロイする場合
+
+```bash
+/bin/bash deploy_dev.sh --no-cache # 開発
+/bin/bash deploy_prod.sh --no-cache # 本番
+```
+
+※ --no-cache を指定してないのに設定が悪いのかキャッシュしてほしいイメージのキャッシュが効かない不具合がありますが動作には影響しません。
+
+※ 時間が結構かかり、5〜10分くらいかかります。
+
+
+## Deploy (ssl)
+
+こちらのドキュメントを参考にして、 `apidoc/ssl` に `証明書ファイル` と `秘密鍵` を用意します。
+
+あとは `Deploy` の方とやり方は同じです。
+
+Dockerイメージキャッシュを使ってデプロイする場合
+
+```bash
+/bin/bash deploy_ssl_dev.sh # 開発
+/bin/bash deploy_ssl_prod.sh # 本番
+```
+
+Dokcerイメージキャッシュを使わないでデプロイする場合
+
+```bash
+/bin/bash deploy_ssl_dev.sh --no-cache # 開発
+/bin/bash deploy_ssl_prod.sh --no-cache # 本番
+```
