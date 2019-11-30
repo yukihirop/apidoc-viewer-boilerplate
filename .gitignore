@@ -4,8 +4,8 @@
 certs/*
 !certs/.keep
 
-apidoc/ssl/*
-!apidoc/ssl/.keep
+server/ssl/*
+!server/ssl/.keep
 
 tmp
 .env

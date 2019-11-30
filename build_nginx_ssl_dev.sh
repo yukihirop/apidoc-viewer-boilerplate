@@ -13,4 +13,4 @@ IPV4_ADDRESS_VIEWER_BACKEND=${IPV4_ADDRESS_VIEWER_BACKEND} \
 EXTERNAL_IP=${EXTERNAL_IP} \
 APIDOC_SSL_CERT=${APIDOC_SSL_CERT} \
 APIDOC_SSL_CERT_KEY=${APIDOC_SSL_CERT_KEY} \
-erb ./apidoc/nginx_ssl_dev.conf.erb > ./tmp/nginx.conf
+erb ./server/nginx_ssl_dev.conf.erb > ./tmp/nginx.conf

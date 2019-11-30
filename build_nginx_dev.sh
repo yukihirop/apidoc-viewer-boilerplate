@@ -11,4 +11,4 @@ APIDOC_SERVER_NAME=${APIDOC_SERVER_NAME} \
 APIDOC_SUBNET_DEFAULT_GATEWAY=${APIDOC_SUBNET_DEFAULT_GATEWAY} \
 IPV4_ADDRESS_VIEWER_BACKEND=${IPV4_ADDRESS_VIEWER_BACKEND} \
 EXTERNAL_IP=${EXTERNAL_IP} \
-erb ./apidoc/nginx_dev.conf.erb > ./tmp/nginx.conf
+erb ./server/nginx_dev.conf.erb > ./tmp/nginx.conf

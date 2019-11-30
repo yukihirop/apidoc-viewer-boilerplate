@@ -1,8 +1,8 @@
 # https://stackoverflow.com/questions/45358188/restrict-access-to-nginx-server-location-to-a-specific-docker-container-with-al
 version: "3"
 services:
-  apidoc:
-    build: ./apidoc
+  server:
+    build: ./server
     ports:
       - "8080:8080"
       - "${APIDOC_PORT}:80"
