@@ -4,7 +4,7 @@
 
 ```bash
 brew install mkcert
-cd apidoc/ssl
+cd server/ssl
 mkcert -install
 ```
 

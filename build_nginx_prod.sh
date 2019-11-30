@@ -11,4 +11,4 @@ APIDOC_SUBNET_DEFAULT_GATEWAY=${APIDOC_SUBNET_DEFAULT_GATEWAY} \
 IPV4_ADDRESS_VIEWER_BACKEND=${IPV4_ADDRESS_VIEWER_BACKEND} \
 EXTERNAL_IP=${EXTERNAL_IP} \
 ELB_SUBNET_ADDRESS=${ELB_SUBNET_ADDRESS} \
-erb ./apidoc/nginx_prod.conf.erb > ./tmp/nginx.conf
+erb ./server/nginx_prod.conf.erb > ./tmp/nginx.conf

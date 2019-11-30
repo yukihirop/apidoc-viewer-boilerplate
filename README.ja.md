@@ -35,10 +35,10 @@ moneyforwardのAPIドキュメントに関しては本家からお借りして�
 
 |コンポーネント|説明|
 |-------------|----|
-|apidoc|`generator` で生成された成果物(APIドキュメント)を動かすためのサーバー。IPアドレス制限をしており、`viewer` からしかAPIドキュメントを参照できないように設定されている。|
+|server|`generator` で生成された成果物(APIドキュメント)を動かすためのサーバー。IPアドレス制限をしており、`viewer` からしかAPIドキュメントを参照できないように設定されている。|
 |certs|githubにアクセスするための公開鍵と秘密鍵を `id_rsa` と `id_rsa.pub` という名前で用意します。|
 |generator|表示したいAPIドキュメントの成果物を用意します。`build` ディレクトリに `index.html` が含まれる形になるようにしてください。この例では、moneyforwardのAPIドキュメント(OpenAPI)を `widdershins` というツールでslate形式のマークダウンに変換して、slateでビルドして用意しております。|
-|viewer|google-oauth2認証付きのAPIドキュメントビューワー。認証をパスするとiframeで `apidoc` で動いているAPIドキュメントを表示する仕組みになっている。|
+|viewer|google-oauth2認証付きのAPIドキュメントビューワー。認証をパスするとiframeで `server` で動いているAPIドキュメントを表示する仕組みになっている。|
 |tmp|ビルド時の一時成果物が吐き出される場所。現在は、ERB形式のnginxの設定ファイルのビルド結果を吐き出す場所になっている。|
 
 ## Environments
@@ -46,7 +46,7 @@ moneyforwardのAPIドキュメントに関しては本家からお借りして�
 |項目|詳細|初期値|
 |---|----|-----|
 |APIDOC_TITLE|APIドキュメントのタイトル|`moneyforward`|
-|APIDOC_URL|`apidoc`のサーバーURL|`http://0.0.0.0:8080`|
+|APIDOC_URL|`server`のサーバーURL|`http://0.0.0.0:8080`|
 |VIEWER_DATABASE_NAME|`viewer`のデータベース名|`viewer_production`|
 |VIEWER_DATABASE_USERNAME|`viewer`のデータベースのユーザー名|`postgres`|
 |VIEWER_DATABASE_PASSWORD|`viewer`のデータベースのパスワード||
@@ -54,13 +54,13 @@ moneyforwardのAPIドキュメントに関しては本家からお借りして�
 |GOOGLE_CLIENT_ID|google-oauth2のクライアントID||
 |GOOGLE_CLIENT_SECRET|google-oauth2のクライアントシークレット||
 |VIEWER_PORT|`viewer`のポート|`3000`|
-|APIDOC_PORT|`apidoc`のポート|`8080`|
-|APIDOC_SERVER_NAME|`apidoc`のサーバーネーム|`_`|
-|APIDOC_SSL_PORT|`apidoc`のsslポート|`443`|
-|APIDOC_SSL_CERT|`apidoc`の証明書ファイル||
-|APIDOC_SSL_CERT_KEY|`apidoc`の秘密鍵||
+|APIDOC_PORT|`server`のポート|`8080`|
+|APIDOC_SERVER_NAME|`server`のサーバーネーム|`_`|
+|APIDOC_SSL_PORT|`server`のsslポート|`443`|
+|APIDOC_SSL_CERT|`server`の証明書ファイル||
+|APIDOC_SSL_CERT_KEY|`server`の秘密鍵||
 |APP_BRANCH|APIドキュメントのファイルを管理しているアプリのブランチ|`master`|
-|IPV4_ADDRESS_APIDOC|`apidoc`のIPアドレス|`172.25.0.103`|
+|IPV4_ADDRESS_APIDOC|`server`のIPアドレス|`172.25.0.103`|
 |IPV4_ADDRESS_VIEWER_BACKEND|`viewer(backend)`のIPアドレス|`172.25.0.100`|
 |IPV4_ADDRESS_VIEWER_FRONTEND|`viewer(frontend)`のIPアドレス|`172.25.0.101`|
 |IPV4_ADDRESS_VIEWER_DB|`viewer(db)`のIPアドレス|`172.25.0.102`|
@@ -119,7 +119,7 @@ Dokcerイメージキャッシュを使わないでデプロイする場合
 
 ## Deploy (ssl)
 
-こちらのドキュメントを参考にして、 `apidoc/ssl` に `証明書ファイル` と `秘密鍵` を用意します。
+こちらのドキュメントを参考にして、 `server/ssl` に `証明書ファイル` と `秘密鍵` を用意します。
 
 あとは `Deploy` の方とやり方は同じです。
 
