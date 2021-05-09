@@ -63,7 +63,7 @@ services:
       apidoc-network:
         ipv4_address: ${IPV4_ADDRESS_VIEWER_FRONTEND}
   viewer_db:
-    image: postgres:10-alpine
+    image: postgres:13-alpine
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
