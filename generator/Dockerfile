@@ -1,6 +1,6 @@
 # MEMO:
 # https://gist.github.com/iagopiimenta/d522fb2aa53b90597924488c070597ac
-FROM ruby:2.5.3-alpine as base
+FROM ruby:2.7.3-alpine as base
 ENV LANG C.UTF-8
 
 RUN apk update && apk add --no-cache sudo openssh git tzdata libxml2-dev curl-dev make gcc libc-dev g++ build-base mariadb-dev nodejs nodejs-npm
