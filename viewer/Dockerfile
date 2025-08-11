@@ -1,6 +1,6 @@
 # https://qiita.com/rh_taro/items/e2b4a0da4b7975921ff7
 FROM node:13.1.0-alpine as node
-FROM ruby:2.5.3-alpine
+FROM ruby:2.7.8-alpine
 
 ENV LANG C.UTF-8
 
